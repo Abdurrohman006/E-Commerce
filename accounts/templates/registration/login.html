@@ -18,21 +18,21 @@
     {% endif %}
     <h2>Login</h2>
     <br>
-    <form method="post">{% csrf_token %}
+    <form action="" method=POST>{% csrf_token %}
 
 
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Username</label>
-    <input type="text" class="form-control" name="username" aria-describedby="emailHelp">
+    <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp">
   </div>
   <div class="mb-3">
     <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" name="password">
+    <input type="password" class="form-control" name="password" id="exampleInputPassword1">
   </div>
 
 
         <br/>
-        <button type="submit" value="Submit" class="btn btn-outline-success ml-2">Kirish</button>
+        <button type="submit" value="Submit" class="btn btn-outline-success ml-2">Login</button>
 <!--        <a class="btn btn-outline-danger" href="{% url 'password_reset' %}" role="button" >Kalit so'zni tiklash</a>-->
     </form>
 </div>

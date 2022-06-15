@@ -1,0 +1,39 @@
+{% extends 'store/main.html' %}
+
+
+{% block content %}
+
+
+
+{% if form.errors %}
+<p>bu yoda form error bor</p>
+{% endif%}
+
+<br>
+<div class="container mb-5">
+    <h2>Registration</h2>
+    <form id='form' action="{% url 'signup' %}" method=POST>{% csrf_token %}
+        {{ form }}
+        <br>
+        <input type="submit" value="Signup" class="btn btn-primary mb-3">
+    </form>
+</div>
+
+
+<script>
+    document.querySelectorAll('label')
+        .forEach((label) => {
+            label.classList.add('form-label')
+        });
+
+    document.querySelectorAll('input')
+        .forEach((input) => {
+            input.classList.add('form-control');
+        });
+
+    let submit = document.querySelector("input[type='submit']")
+    submit.classList.remove('form-control')
+
+
+</script>
+{% endblock content %}

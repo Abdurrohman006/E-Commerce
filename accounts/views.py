@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-
+from store.models import Customer
+from .forms import SignUpForm
 
 # Create your views here.
+
 
 def login_user(request):
     if request.method == 'POST':
@@ -19,3 +21,21 @@ def login_user(request):
             return redirect('login')
     else:
         return render(request, 'registration/login.html', {})
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            # saving the registered user
+            user = form.save()
+            Customer.objects.create(
+                user=user,
+                name=user.username,
+                email=user.email
+            )
+            messages.success(request, f'Your Account has been created! You can now log in')
+            return redirect('login')
+    else:
+        form = SignUpForm()  # creates an empty form
+    return render(request, 'registration/signup.html', {'form': form, })
