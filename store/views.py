@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 import datetime
 import json
 from django.http import JsonResponse
 from .models import *
 from .utils import cookieCart, cartData, guestOrder
+
+# CRUD
+from .forms import ProductForm
 
 # Create your views here.
 # from django.template import context
@@ -105,3 +108,70 @@ def processOrder(request):
             )
 
     return JsonResponse("Payment complete", safe=False)
+
+
+
+
+# CRUD #################################################
+
+
+def products(request):
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    products = Product.objects.all()
+
+    context = {'products': products, 'cartItems': cartItems}
+
+    return render(request, 'products/products.html', context)
+
+
+def createProduct(request):
+    # Formani initsializatsiya qilish
+    productFrom = ProductForm()
+    if request.method == 'POST':
+        my_form = ProductForm(request.POST)
+        if my_form.is_valid():
+            my_form.save()
+            return redirect('store')
+
+    # Formani yuborish uchun direct ko'rinishga o'tkazish
+    form = {'productForm': productFrom}
+
+    # Templateni render qilish va unga formani yuborish
+    return render(request, 'products/create_products.html', form)
+
+
+
+def updateProduct(request, cid):
+    # Formani initsializatsiya qilish
+    product = Product.objects.get(id=cid)
+    productFrom = ProductForm(instance=product)
+
+    if request.method == 'POST':
+        my_form = ProductForm(request.POST, instance=product)
+        if my_form.is_valid():
+            my_form.save()
+            return redirect('products')
+
+    # Formani yuborish uchun direct ko'rinishga o'tkazish
+    form = {'productForm': productFrom}
+
+    # Templateni render qilish va unga formani yuborish
+    return render(request, 'products/update_products.html', form)
+
+
+def deleteProduct(request, cid):
+    # O'chirlgan obyekt ma'lumotlarni olish
+    product = Product.objects.get(id=cid)
+
+    if request.method == 'POST':
+            product.delete()
+            return redirect('products')
+
+    # O'chirilgan ma'lumotni yuborish uchun direct ko'rinishga o'tkazish
+    form = {'product': product}
+
+    # Templateni render qilish va unga formani yuborish
+    return render(request, 'products/delete_products.html', form)

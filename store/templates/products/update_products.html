@@ -1,0 +1,60 @@
+{% extends 'store/main.html' %}
+
+
+{% block content %}
+<style>
+    label{
+    font-weight: 630;
+    margin-top: 1rem;
+    margin-bottom: 0px !important;
+
+    }
+
+    #id_digital{
+    margin-right: 100% !important;
+    }
+
+    #id_image{
+    display: flex !important;
+    }
+
+    #image-clear_id{
+    display: inline !important;
+    appearance: auto !important;
+
+    width: 1rem !important;
+    }
+</style>
+<div class="container mb-5">
+    <h2>Update Products</h2>
+
+
+
+    <form action="" method='POST' enctype="multipart/form-data">{% csrf_token %}
+        <label>Create new product using following fields</label>
+        <br>
+        {{ productForm }}
+        <br>
+        <input type="submit" name="update" value="Update Product" class="btn btn-primary mb-3">
+<!--        <input type="submit" value="Save" class="default" name="_save">-->
+    </form>
+</div>
+
+<script>
+    document.querySelectorAll('label')
+        .forEach((label) => {
+            label.classList.add('form-label')
+        });
+
+    document.querySelectorAll('input')
+        .forEach((input) => {
+            input.classList.add('form-control');
+        });
+
+    let submit = document.querySelector("input[type='submit']")
+    submit.classList.remove('form-control')
+
+
+</script>
+
+{% endblock content %}

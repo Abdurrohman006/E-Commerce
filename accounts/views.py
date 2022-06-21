@@ -4,6 +4,8 @@ from django.contrib import messages
 from store.models import Customer
 from .forms import SignUpForm
 
+
+
 # Create your views here.
 
 
@@ -18,7 +20,7 @@ def login_user(request):
             # Redirect to a success page.
         else:
             messages.success(request, ('There Was An Error Logging In, Try again...'))
-            return redirect('login')
+            return redirect('login_user')
     else:
         return render(request, 'registration/login.html', {})
 
@@ -35,7 +37,12 @@ def signup(request):
                 email=user.email
             )
             messages.success(request, f'Your Account has been created! You can now log in')
-            return redirect('login')
+            return redirect('login_user')
     else:
         form = SignUpForm()  # creates an empty form
     return render(request, 'registration/signup.html', {'form': form, })
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('store')
