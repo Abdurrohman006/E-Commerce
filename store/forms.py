@@ -2,8 +2,8 @@ from .models import Product
 from django.forms import ModelForm
 
 
-class ProductForm(ModelForm):
-    class Meta:
-        model = Product
-        fields = ('name', 'price', 'digital', 'image')
-        # fields = '__all__'
+# class ProductForm(ModelForm):
+#     class Meta:
+#         model = Product
+#         fields = ('name', 'price', 'digital', 'image')
+#         # fields = '__all__'

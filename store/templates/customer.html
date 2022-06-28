@@ -1,0 +1,61 @@
+{% extends 'manage_admin.html' %}
+{% load static %}
+
+{% block content1 %}
+<!--python manage.py runserver 0.0.0.0:8000-->
+
+
+
+
+
+
+
+
+<div class="row">
+    <div class="col-lg-12">
+
+
+        <br>
+
+        <div class="box-element mb-5">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">First name</th>
+                        <th scope="col">Last name</th>
+                        <th scope="col">staff status</th>
+
+                        <th scope="col" style="width: 100px;">Update</th>
+                        <th scope="col" style="width: 80px;">Delete</th>
+
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer.username }}</td>
+                        <td>{{ customer.email }}</td>
+                        <td>{{ customer.first_name }}</td>
+                        <td>{{ customer.last_name }}</td>
+                        <td>{{ customer.is_staff }}</td>
+                        <td><a class="btn btn-success button-style" href="{% url 'update_customer' customer.id %}">Update</a></td>
+                        <td><a class="btn btn-danger button-style" href="{% url 'delete_customer' customer.id %}">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>     <!-- box-element end -->
+
+    </div>     <!-- col-lg-12 end -->
+
+
+
+
+
+</div>
+{% endblock content1 %}

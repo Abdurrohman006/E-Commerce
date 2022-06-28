@@ -97,3 +97,24 @@ h1,h2,h3,h4,h5,h6{
 .hidden{
 	display: none!important;
 }
+
+.button-style {
+    padding: 2px 10px;
+    border-radius: 5px;
+}
+
+.my-image {
+
+    max-height: 60px;
+    width: auto;
+}
+
+/* Telefeon format uchin style */
+@media (max-width: 768px) {
+    .mobil {
+        overflow-x: scroll !important;
+    }
+    .button-style {
+        padding: 1px 10px;
+    }
+}

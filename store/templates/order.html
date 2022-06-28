@@ -1,0 +1,55 @@
+{% extends 'manage_admin.html' %}
+{% load static %}
+
+{% block content1 %}
+<!--python manage.py runserver 0.0.0.0:8000-->
+
+
+
+
+
+
+
+
+<div class="row">
+    <div class="col-lg-12">
+
+
+        <br>
+
+        <div class="box-element mb-5">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Username</th>
+                        <th scope="col">date </th>
+                        <th scope="col">Complete</th>
+<!--                        <th scope="col">Total</th>-->
+                        <th scope="col">Transaction id</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td><a href="{% url 'customer' %}">{{ order.customer.name }}</a></td>
+                        <td>{{ order.date_ordered }}</td>
+                        <td>{{ order.complete }}</td>
+<!--                        <td>{{ order_total.get_cart_total|floatformat:2 }}</td>-->
+                        <td>{{ order.transaction_id }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>     <!-- box-element end -->
+
+    </div>     <!-- col-lg-12 end -->
+
+
+
+
+
+</div>
+{% endblock content1 %}

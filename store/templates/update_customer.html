@@ -7,17 +7,26 @@
     font-weight: 630;
     margin-top: 1rem;
     margin-bottom: 0px !important;
+
     }
 
     #id_digital{
     margin-right: 100% !important;
     }
+
+    #id_image{
+    display: flex !important;
+    }
+
+    #image-clear_id{
+    display: none !important;
+    appearance: auto !important;
+
+    width: 1rem !important;
+    }
 </style>
 <div class="container mb-5">
-    <h2>Add Products</h2>
-
-
-
+    <h2>Update Customer</h2>
 
 
 
@@ -26,7 +35,7 @@
         <br>
         {{ form }}
         <br>
-        <input type="submit" name="create" value="Create Product" class="btn btn-primary mb-3">
+        <input type="submit" name="update" value="Update Customer" class="btn btn-primary mb-3">
 <!--        <input type="submit" value="Save" class="default" name="_save">-->
     </form>
 </div>
@@ -44,6 +53,9 @@
 
     let submit = document.querySelector("input[type='submit']")
     submit.classList.remove('form-control')
+
+    let checkbox = document.querySelector("input[type='checkbox']")
+    checkbox.classList.remove('form-control')
 
 
 </script>

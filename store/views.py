@@ -3,11 +3,15 @@ from django.shortcuts import render, redirect
 import datetime
 import json
 from django.http import JsonResponse
+
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, UpdateView
+
 from .models import *
 from .utils import cookieCart, cartData, guestOrder
 
 # CRUD
-from .forms import ProductForm
+# from .forms import ProductForm
 
 # Create your views here.
 # from django.template import context
@@ -127,39 +131,52 @@ def products(request):
     return render(request, 'products/products.html', context)
 
 
-def createProduct(request):
-    # Formani initsializatsiya qilish
-    productFrom = ProductForm()
-    if request.method == 'POST':
-        my_form = ProductForm(request.POST)
-        if my_form.is_valid():
-            my_form.save()
-            return redirect('store')
+# def createProduct(request):
+#     # Formani initsializatsiya qilish
+#     productFrom = ProductForm()
+#     if request.method == 'POST':
+#         my_form = ProductForm(request.POST)
+#         if my_form.is_valid():
+#             my_form.save()
+#             return redirect('store')
+#
+#     # Formani yuborish uchun direct ko'rinishga o'tkazish
+#     form = {'productForm': productFrom}
+#
+#     # Templateni render qilish va unga formani yuborish
+#     return render(request, 'products/create_products.html', form)
 
-    # Formani yuborish uchun direct ko'rinishga o'tkazish
-    form = {'productForm': productFrom}
 
-    # Templateni render qilish va unga formani yuborish
-    return render(request, 'products/create_products.html', form)
+class CreateProduct(CreateView):
+    model = Product
+    template_name = 'products/create_products.html'
+    success_url = reverse_lazy('products')
+    fields = ('name', 'price', 'digital', 'image')
 
 
+class UpdateProduct(UpdateView):
+    model = Product
+    template_name = 'products/update_products.html'
+    success_url = reverse_lazy('products')
+    fields = ('name', 'price', 'digital', 'image')
 
-def updateProduct(request, cid):
-    # Formani initsializatsiya qilish
-    product = Product.objects.get(id=cid)
-    productFrom = ProductForm(instance=product)
 
-    if request.method == 'POST':
-        my_form = ProductForm(request.POST, instance=product)
-        if my_form.is_valid():
-            my_form.save()
-            return redirect('products')
-
-    # Formani yuborish uchun direct ko'rinishga o'tkazish
-    form = {'productForm': productFrom}
-
-    # Templateni render qilish va unga formani yuborish
-    return render(request, 'products/update_products.html', form)
+# def updateProduct(request, cid):
+#     # Formani initsializatsiya qilish
+#     product = Product.objects.get(id=cid)
+#     productFrom = ProductForm(instance=product)
+#
+#     if request.method == 'POST':
+#         my_form = ProductForm(request.POST, instance=product)
+#         if my_form.is_valid():
+#             my_form.save()
+#             return redirect('products')
+#
+#     # Formani yuborish uchun direct ko'rinishga o'tkazish
+#     form = {'productForm': productFrom}
+#
+#     # Templateni render qilish va unga formani yuborish
+#     return render(request, 'products/update_products.html', form)
 
 
 def deleteProduct(request, cid):
@@ -175,3 +192,82 @@ def deleteProduct(request, cid):
 
     # Templateni render qilish va unga formani yuborish
     return render(request, 'products/delete_products.html', form)
+
+
+class UpdateCustomer(UpdateView):
+    model = User
+    template_name = 'update_customer.html'
+    success_url = reverse_lazy('customer')
+    fields = ('username', 'email', 'first_name', 'last_name', 'is_staff')
+
+
+def deleteCustomer(request, cid):
+    # O'chirlgan obyekt ma'lumotlarni olish
+    customer = User.objects.get(id=cid)
+
+    if request.method == 'POST':
+            customer.delete()
+            return redirect('customer')
+
+    # O'chirilgan ma'lumotni yuborish uchun direct ko'rinishga o'tkazish
+    form = {'customer': customer}
+
+    # Templateni render qilish va unga formani yuborish
+    return render(request, 'delete_customer.html', form)
+
+
+
+
+
+
+
+def customer(request):
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    customers = User.objects.all()
+
+    context = {'customers': customers, 'cartItems': cartItems}
+
+    return render(request, 'customer.html', context)
+
+
+def order(request):
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    orders = Order.objects.all()
+    order_total = data['order']
+    context = {'orders': orders, 'cartItems': cartItems, 'order_total': order_total}
+
+    return render(request, 'order.html', context)
+
+
+
+
+
+def orderItem(request):
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    order_items = OrderItem.objects.all()
+    order_total = data['order']
+    context = {'order_items': order_items, 'cartItems': cartItems, 'order_total': order_total}
+
+    return render(request, 'store/order_item.html', context)
+
+
+def home(request):
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    products = Product.objects.all()
+
+    context = {'products': products, 'cartItems': cartItems}
+
+    return render(request, 'home.html', context)
+

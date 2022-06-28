@@ -92,4 +92,4 @@ def guestOrder(request, data):
             quantity=item['quantity'],
         )
 
-    return customer, order
+    return customer, order, orderItem
