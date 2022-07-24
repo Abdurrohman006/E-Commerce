@@ -1,0 +1,43 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5 mb-4 mb-md-0">
+
+        <div class="product-image-slider">
+
+          <div data-image="{{ product.imageURL }}">
+            <img class="img-fluid w-100" src="{{ product.imageURL }}" alt="product-image">
+          </div>
+
+
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-7 offset-lg-1">
+        <h1 class="mb-4">{{ product.name }}</h1>
+        <p><strong>Colors: </strong>Black, White, Gray</p>
+        <p><strong>Sizes: </strong>Small, Medium, Large</p>
+        <p class="price py-4">${{ product.price }}
+          <s class="price">${{ product.price }}</s>
+        </p>
+            <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">
+                Add to Cart
+            </button>
+        <div class="content">
+          <p>Apple Watch is a line of smartwatches produced by Apple Inc. It incorporates fitness tracking and
+            health-oriented capabilities with integration with iOS and other Apple products and services.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock content %}

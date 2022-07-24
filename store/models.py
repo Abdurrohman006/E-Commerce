@@ -13,11 +13,20 @@ class Customer(models.Model):
         return self.name
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
     price = models.DecimalField(max_digits=7, decimal_places=2)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     digital = models.BooleanField(default=False, null=True, blank=False)
     image = models.ImageField(blank=True, null=True, upload_to='images/')
+
 
     def __str_(self):
         return self.name
@@ -56,6 +65,7 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
         total = sum([item.get_total for item in orderitems])
         return total
+
 
     # Barcha productni sanog'ini hisoblab beruvchi funksiya
     @property

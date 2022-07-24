@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 
+from django.views.generic import TemplateView
+
 import datetime
 import json
 from django.http import JsonResponse
@@ -10,6 +12,7 @@ from django.views.generic import CreateView, UpdateView
 from .models import *
 from .utils import cookieCart, cartData, guestOrder
 
+
 # CRUD
 # from .forms import ProductForm
 
@@ -19,13 +22,18 @@ from .utils import cookieCart, cartData, guestOrder
 
 def store(request):
 
-    data = cartData(request)
-    cartItems = data['cartItems']
+    if request.user.is_authenticated:
+        # Do something for authenticated users.
 
-    products = Product.objects.all()
+        data = cartData(request)
+        cartItems = data['cartItems']
 
-    context = {'products': products, 'cartItems': cartItems}
-    return render(request, "store/store.html", context)
+        products = Product.objects.all()
+
+        context = {'products': products, 'cartItems': cartItems}
+        return render(request, "store/store.html", context)
+    else:
+        return redirect('login_user')
 
 
 def cart(request):
@@ -151,14 +159,14 @@ class CreateProduct(CreateView):
     model = Product
     template_name = 'products/create_products.html'
     success_url = reverse_lazy('products')
-    fields = ('name', 'price', 'digital', 'image')
+    fields = ('name', 'price', 'category', 'digital', 'image')
 
 
 class UpdateProduct(UpdateView):
     model = Product
     template_name = 'products/update_products.html'
     success_url = reverse_lazy('products')
-    fields = ('name', 'price', 'digital', 'image')
+    fields = ('name', 'price', 'category', 'digital', 'image')
 
 
 # def updateProduct(request, cid):
@@ -179,9 +187,9 @@ class UpdateProduct(UpdateView):
 #     return render(request, 'products/update_products.html', form)
 
 
-def deleteProduct(request, cid):
+def deleteProduct(request, p_id):
     # O'chirlgan obyekt ma'lumotlarni olish
-    product = Product.objects.get(id=cid)
+    product = Product.objects.get(id=p_id)
 
     if request.method == 'POST':
             product.delete()
@@ -199,6 +207,18 @@ class UpdateCustomer(UpdateView):
     template_name = 'update_customer.html'
     success_url = reverse_lazy('customer')
     fields = ('username', 'email', 'first_name', 'last_name', 'is_staff')
+
+
+def product_detail(request, p_id):
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    product = Product.objects.get(id=p_id)
+
+    context = {'product': product, 'cartItems': cartItems}
+
+    return render(request, 'products/product_detail.html', context)
+
 
 
 def deleteCustomer(request, cid):
@@ -249,15 +269,20 @@ def order(request):
 
 
 def orderItem(request):
+    print('REQUEST >>>>>>>>>>>>> ', request.body)
 
     data = cartData(request)
     cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
 
     order_items = OrderItem.objects.all()
-    order_total = data['order']
-    context = {'order_items': order_items, 'cartItems': cartItems, 'order_total': order_total}
+
+    context = {'order_items': order_items, 'order': order, 'cartItems': cartItems, 'items': items}
 
     return render(request, 'store/order_item.html', context)
+
+
 
 
 def home(request):
@@ -270,4 +295,16 @@ def home(request):
     context = {'products': products, 'cartItems': cartItems}
 
     return render(request, 'home.html', context)
+
+
+
+######################################################################################################
+#                          CATEGORY
+
+def cellphones(request):
+
+    products = Product.objects.filter(category__name='Cellphones')
+
+    context = {'products': products}
+    return render(request, 'category/cellphones.html', context)
 

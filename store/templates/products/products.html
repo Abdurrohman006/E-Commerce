@@ -21,6 +21,7 @@
                         <th scope="col">Image</th>
                         <th scope="col">Name</th>
                         <th scope="col">Digital</th>
+                        <th scope="col">Category</th>
                         <th scope="col">Price</th>
                         <th scope="col" style="width: 100px;">Update</th>
                         <th scope="col" style="width: 80px;">Delete</th>
@@ -33,6 +34,7 @@
                         <td><img class="row-image my-image" src="{{ product.imageURL }}"></td>
                         <td>{{ product.name }}</td>
                         <td>{{ product.digital }}</td>
+                        <td>{{ product.category.name }}</td>
                         <td>${{ product.price|floatformat:2 }}</td>
                         <td><a class="btn btn-success button-style" href="{% url 'update_products' product.id %}">Update</a></td>
                         <td><a class="btn btn-danger button-style" href="{% url 'delete_products' product.id %}">Delete</a></td>

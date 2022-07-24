@@ -65,6 +65,7 @@ def guestOrder(request, data):
     # print('User is not logged in..')
 
     # print('Cookie:', request.COOKIES)
+    global orderItem
     name = data['form']['name']
     email = data['form']['email']
 
@@ -93,3 +94,5 @@ def guestOrder(request, data):
         )
 
     return customer, order, orderItem
+
+
